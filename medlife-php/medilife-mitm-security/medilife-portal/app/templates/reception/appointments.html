@@ -1,0 +1,58 @@
+{% extends "layouts/reception.html" %}
+
+{% block title %}Programimet{% endblock %}
+
+{% block page_title %}Të Gjitha Programimet{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Programimet</h2>
+        <a href="{{ url_for('reception.create_appointment') }}" class="btn btn-primary">
+            ➕ Krijo Programim
+        </a>
+    </div>
+    <div class="card-body">
+        {% if appointments %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Pacienti</th>
+                    <th>Mjeku</th>
+                    <th>Arsyeja</th>
+                    <th>Kohëzgjatja</th>
+                    <th>Statusi</th>
+                    <th>Veprime</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appt in appointments %}
+                <tr>
+                    <td>{{ appt.appointment_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ appt.patient.full_name }}</td>
+                    <td>{{ appt.doctor.username }}</td>
+                    <td>{{ appt.reason or '-' }}</td>
+                    <td>{{ appt.duration_minutes }} min</td>
+                    <td>
+                        <span class="badge badge-{{ 'success' if appt.status == 'completed' else 'info' if appt.status == 'scheduled' else 'secondary' }}">
+                            {{ appt.status }}
+                        </span>
+                    </td>
+                    <td class="actions">
+                        {% if appt.status == 'scheduled' %}
+                        <form method="POST" action="{{ url_for('reception.cancel_appointment', appointment_id=appt.id) }}" style="display: inline;" onsubmit="return confirm('Jeni i sigurt?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Anulo</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">Nuk ka programime.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

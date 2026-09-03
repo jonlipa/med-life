@@ -1,0 +1,67 @@
+{% extends "layouts/admin.html" %}
+
+{% block title %}Menaxhimi i Përdoruesve{% endblock %}
+
+{% block page_title %}Menaxhimi i Përdoruesve{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Lista e Përdoruesve</h2>
+        <a href="{{ url_for('admin.create_user') }}" class="btn btn-primary">
+            ➕ Krijo Përdorues të Ri
+        </a>
+    </div>
+    <div class="card-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Emri i Përdoruesit</th>
+                    <th>Roli</th>
+                    <th>Statusi</th>
+                    <th>Hyri për herë të fundit</th>
+                    <th>Veprime</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>
+                        <span class="badge badge-role-{{ user.role.value }}">
+                            {{ user.role.value|title }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if user.active %}
+                            <span class="badge badge-success">Aktiv</span>
+                        {% else %}
+                            <span class="badge badge-secondary">Joaktiv</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.last_login_at %}
+                            {{ user.last_login_at.strftime('%Y-%m-%d %H:%M') }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="btn btn-sm btn-outline">
+                            ✏️
+                        </a>
+                        {% if user.id != g.current_user.id %}
+                        <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}" style="display: inline;" onsubmit="return confirm('Jeni i sigurt që doni të fshini këtë përdorues?');">
+                            <button type="submit" class="btn btn-sm btn-danger">🗑️</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

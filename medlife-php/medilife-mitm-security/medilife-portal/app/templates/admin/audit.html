@@ -1,0 +1,89 @@
+{% extends "layouts/admin.html" %}
+
+{% block title %}Audit Log{% endblock %}
+
+{% block page_title %}Audit Log{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Regjistri i Auditimit</h2>
+        <div class="filters">
+            <form method="GET" class="filter-form">
+                <select name="action" class="form-control">
+                    <option value="">Të gjitha aksionet</option>
+                    <option value="LOGIN" {% if action_filter == 'LOGIN' %}selected{% endif %}>LOGIN</option>
+                    <option value="LOGOUT" {% if action_filter == 'LOGOUT' %}selected{% endif %}>LOGOUT</option>
+                    <option value="VIEW_RECORD" {% if action_filter == 'VIEW_RECORD' %}selected{% endif %}>VIEW_RECORD</option>
+                    <option value="EDIT_RECORD" {% if action_filter == 'EDIT_RECORD' %}selected{% endif %}>EDIT_RECORD</option>
+                    <option value="CREATE_USER" {% if action_filter == 'CREATE_USER' %}selected{% endif %}>CREATE_USER</option>
+                    <option value="EDIT_USER" {% if action_filter == 'EDIT_USER' %}selected{% endif %}>EDIT_USER</option>
+                </select>
+                <select name="outcome" class="form-control">
+                    <option value="">Të gjitha rezultatet</option>
+                    <option value="success" {% if outcome_filter == 'success' %}selected{% endif %}>Sukses</option>
+                    <option value="failure" {% if outcome_filter == 'failure' %}selected{% endif %}>Dështim</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filtro</button>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Koha</th>
+                    <th>Aksioni</th>
+                    <th>Aktori</th>
+                    <th>Target</th>
+                    <th>IP Burimi</th>
+                    <th>Rezultati</th>
+                    <th>Detajet</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td><span class="badge badge-info">{{ event.action }}</span></td>
+                    <td>{{ event.actor_id or 'Sistem' }}</td>
+                    <td>{{ event.target_type }}:{{ event.target_id }}</td>
+                    <td><code>{{ event.source_ip }}</code></td>
+                    <td>
+                        {% if event.outcome == 'success' %}
+                            <span class="badge badge-success">✓</span>
+                        {% else %}
+                            <span class="badge badge-danger">✗</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if event.details %}
+                            <code>{{ event.details|tojson }}</code>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        {% if pagination.pages > 1 %}
+        <div class="pagination">
+            {% if pagination.has_prev %}
+                <a href="?page={{ pagination.prev_num }}&action={{ action_filter }}&outcome={{ outcome_filter }}" class="btn btn-outline">« Mbrapa</a>
+            {% endif %}
+
+            <span class="pagination-info">
+                Faqja {{ pagination.page }} nga {{ pagination.pages }}
+            </span>
+
+            {% if pagination.has_next %}
+                <a href="?page={{ pagination.next_num }}&action={{ action_filter }}&outcome={{ outcome_filter }}" class="btn btn-outline">Para »</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

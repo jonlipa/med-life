@@ -1,0 +1,114 @@
+{% extends "layouts/patient.html" %}
+
+{% block title %}Paneli Im{% endblock %}
+
+{% block page_title %}Mirësevini{% endblock %}
+
+{% block content %}
+{% if patient %}
+<div class="dashboard-grid">
+    <!-- Welcome Card -->
+    <div class="card">
+        <div class="card-body">
+            <h2>Mirësevini, {{ patient.first_name }}!</h2>
+            <p class="text-muted">Ky është paneli juaj personal shëndetësor.</p>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card stat-info">
+            <div class="stat-icon">📅</div>
+            <div class="stat-content">
+                <h3>{{ upcoming_appointments|length }}</h3>
+                <p>Programimet e Ardhshme</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-success">
+            <div class="stat-icon">📄</div>
+            <div class="stat-content">
+                <h3>{{ recent_records|length }}</h3>
+                <p>Regjistrimet Mjekësore</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Programimet e Ardhshme</h2>
+            <a href="{{ url_for('patient.appointments') }}" class="btn btn-sm btn-outline">Shiko të Gjitha</a>
+        </div>
+        <div class="card-body">
+            {% if upcoming_appointments %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Mjeku</th>
+                        <th>Arsyeja</th>
+                        <th>Statusi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in upcoming_appointments %}
+                    <tr>
+                        <td>{{ appt.appointment_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ appt.doctor.username }}</td>
+                        <td>{{ appt.reason or '-' }}</td>
+                        <td><span class="badge badge-info">{{ appt.status }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">Nuk ka programime të ardhshme.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Records -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Regjistrimet e Fundit Mjekësore</h2>
+            <a href="{{ url_for('patient.records') }}" class="btn btn-sm btn-outline">Shiko të Gjitha</a>
+        </div>
+        <div class="card-body">
+            {% if recent_records %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Tipi</th>
+                        <th>Detajet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in recent_records %}
+                    <tr>
+                        <td>{{ record.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td><span class="badge badge-info">{{ record.record_type }}</span></td>
+                        <td>
+                            <a href="{{ url_for('patient.records') }}" class="btn btn-sm btn-outline">
+                                Shiko
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">Nuk ka regjistrime mjekësore.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card">
+    <div class="card-body">
+        <p class="text-muted">Nuk ka profil pacienti të lidhur me llogarinë tuaj. Ju lutemi kontaktoni recepcionin për ndihmë.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

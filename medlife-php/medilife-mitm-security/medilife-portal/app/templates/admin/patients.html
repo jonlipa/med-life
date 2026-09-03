@@ -1,0 +1,51 @@
+{% extends "layouts/admin.html" %}
+
+{% block title %}Menaxhimi i Pacientëve{% endblock %}
+
+{% block page_title %}Menaxhimi i Pacientëve{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Lista e Pacientëve</h2>
+    </div>
+    <div class="card-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Emri i Plotë</th>
+                    <th>Data e Lindjes</th>
+                    <th>Telefoni</th>
+                    <th>Email</th>
+                    <th>Mjeku i Caktuar</th>
+                    <th>Veprime</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td>{{ patient.id }}</td>
+                    <td>{{ patient.full_name }}</td>
+                    <td>{{ patient.date_of_birth.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ patient.phone or '-' }}</td>
+                    <td>{{ patient.email or '-' }}</td>
+                    <td>
+                        {% if patient.assigned_doctor %}
+                            {{ patient.assigned_doctor.username }}
+                        {% else %}
+                            <span class="badge badge-warning">I pacaktuar</span>
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        <a href="{{ url_for('admin.assign_doctor', patient_id=patient.id) }}" class="btn btn-sm btn-primary">
+                            Cakto Mjek
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

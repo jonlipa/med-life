@@ -1,0 +1,58 @@
+{% extends "layouts/doctor.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card card-narrow">
+    <div class="card-header">
+        <h2>{{ title }} - {{ patient.full_name }}</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" class="form">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.record_type.label }}
+                {{ form.record_type(class="form-control") }}
+                {% for error in form.record_type.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.diagnosis.label }}
+                {{ form.diagnosis(class="form-control", rows=4) }}
+                <small class="form-hint">🔒 Kjo fushë është e enkriptuar me AES-256-GCM</small>
+                {% for error in form.diagnosis.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.treatment.label }}
+                {{ form.treatment(class="form-control", rows=4) }}
+                <small class="form-hint">🔒 Kjo fushë është e enkriptuar me AES-256-GCM</small>
+                {% for error in form.treatment.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.notes.label }}
+                {{ form.notes(class="form-control", rows=4) }}
+                <small class="form-hint">🔒 Kjo fushë është e enkriptuar me AES-256-GCM</small>
+                {% for error in form.notes.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Ruaj</button>
+                <a href="{{ url_for('doctor.view_patient', patient_id=patient.id) }}" class="btn btn-outline">Anulo</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

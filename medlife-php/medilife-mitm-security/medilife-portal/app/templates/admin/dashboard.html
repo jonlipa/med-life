@@ -1,0 +1,101 @@
+{% extends "layouts/admin.html" %}
+
+{% block title %}Paneli i Administratorit{% endblock %}
+
+{% block page_title %}Paneli i Administratorit{% endblock %}
+
+{% block content %}
+<div class="dashboard-grid">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card stat-primary">
+            <div class="stat-icon">👥</div>
+            <div class="stat-content">
+                <h3>{{ total_users }}</h3>
+                <p>Përdoruesit Total</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-success">
+            <div class="stat-icon">📋</div>
+            <div class="stat-content">
+                <h3>{{ total_patients }}</h3>
+                <p>Pacientët Total</p>
+            </div>
+        </div>
+
+        <div class="stat-card stat-info">
+            <div class="stat-icon">👨‍⚕️</div>
+            <div class="stat-content">
+                <h3>{{ total_doctors }}</h3>
+                <p>Mjekët Aktiv</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Veprime të Shpejta</h2>
+        </div>
+        <div class="card-body">
+            <div class="quick-actions">
+                <a href="{{ url_for('admin.create_user') }}" class="btn btn-primary">
+                    ➕ Krijo Përdorues
+                </a>
+                <a href="{{ url_for('admin.users') }}" class="btn btn-outline">
+                    👥 Menaxho Përdoruesit
+                </a>
+                <a href="{{ url_for('admin.patients') }}" class="btn btn-outline">
+                    📋 Menaxho Pacientët
+                </a>
+                <a href="{{ url_for('admin.audit_log') }}" class="btn btn-outline">
+                    🔒 Shiko Audit Log
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Audit Events -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Aktiviteti i Fundit</h2>
+            <a href="{{ url_for('admin.audit_log') }}" class="btn btn-sm btn-outline">Shiko të Gjitha</a>
+        </div>
+        <div class="card-body">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Koha</th>
+                        <th>Aksioni</th>
+                        <th>Përdoruesi</th>
+                        <th>Target</th>
+                        <th>Rezultati</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in recent_events %}
+                    <tr>
+                        <td>{{ event.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td><span class="badge badge-info">{{ event.action }}</span></td>
+                        <td>{{ event.actor_id }}</td>
+                        <td>{{ event.target_type }}:{{ event.target_id }}</td>
+                        <td>
+                            {% if event.outcome == 'success' %}
+                                <span class="badge badge-success">Sukses</span>
+                            {% else %}
+                                <span class="badge badge-danger">Dështim</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Nuk ka aktivitete të fundit</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

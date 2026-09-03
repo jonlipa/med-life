@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+
+{% block body_class %}reception-layout{% endblock %}
+
+{% block sidebar_nav %}
+<div class="nav-group">
+    <div class="nav-group-title">Recepcioni</div>
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a href="{{ url_for('reception.dashboard') }}" class="nav-link {% if request.endpoint == 'reception.dashboard' %}active{% endif %}">
+                <span class="nav-icon">🖥️</span>
+                <span class="nav-text">Paneli Kryesor</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="nav-group">
+    <div class="nav-group-title">Regjistrimi</div>
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a href="{{ url_for('reception.patients') }}" class="nav-link {% if request.endpoint == 'reception.patients' %}active{% endif %}">
+                <span class="nav-icon">📝</span>
+                <span class="nav-text">Pacientët</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('reception.create_patient') }}" class="nav-link {% if request.endpoint == 'reception.create_patient' %}active{% endif %}">
+                <span class="nav-icon">➕</span>
+                <span class="nav-text">Regjistro Pacient të Ri</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="nav-group">
+    <div class="nav-group-title">Programimet</div>
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a href="{{ url_for('reception.appointments') }}" class="nav-link {% if request.endpoint == 'reception.appointments' %}active{% endif %}">
+                <span class="nav-icon">📅</span>
+                <span class="nav-text">Të Gjitha Programimet</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url_for('reception.create_appointment') }}" class="nav-link {% if request.endpoint == 'reception.create_appointment' %}active{% endif %}">
+                <span class="nav-icon">➕</span>
+                <span class="nav-text">Krijo Programim</span>
+            </a>
+        </li>
+    </ul>
+</div>
+{% endblock %}

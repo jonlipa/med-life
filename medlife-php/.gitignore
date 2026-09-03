@@ -1,0 +1,46 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# Runtime output and temporary state
+/runtime/
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/ratelimits/
+/storage/cache/
+/storage/sessions/
+/storage/uploads/
+**/flask_session/
+*.log
+
+# Local databases, dumps, certificates, and keys
+*.sqlite
+*.sqlite3
+*.db
+*.bak
+*.dump
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+/certs/
+
+# Dependencies and tooling
+/vendor/
+node_modules/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vscode/
+.idea/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini

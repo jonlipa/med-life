@@ -1,0 +1,53 @@
+{% extends "layouts/patient.html" %}
+
+{% block title %}Profili Im{% endblock %}
+
+{% block page_title %}Profili Im{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Informacionet Personale</h2>
+        <a href="{{ url_for('patient.edit_profile') }}" class="btn btn-primary">
+            ✏️ Edito
+        </a>
+    </div>
+    <div class="card-body">
+        <dl class="info-list">
+            <dt>Emri i Plotë</dt>
+            <dd>{{ patient.full_name }}</dd>
+
+            <dt>Data e Lindjes</dt>
+            <dd>{{ patient.date_of_birth.strftime('%Y-%m-%d') }}</dd>
+
+            <dt>Gjinia</dt>
+            <dd>{{ patient.gender or '-' }}</dd>
+
+            <dt>Telefoni</dt>
+            <dd>{{ patient.phone or '-' }}</dd>
+
+            <dt>Email</dt>
+            <dd>{{ patient.email or '-' }}</dd>
+
+            <dt>Adresa</dt>
+            <dd>{{ patient.address or '-' }}</dd>
+
+            <dt>Numri i Sigurimit</dt>
+            <dd>{{ patient.insurance_number or '-' }}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Llogaria</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Emri i Përdoruesit:</strong> {{ g.current_user.username }}</p>
+        <p><strong>Roli:</strong> {{ g.current_user.role.value|title }}</p>
+        <a href="{{ url_for('patient.change_password') }}" class="btn btn-outline">
+            Ndrysho Fjalëkalimin
+        </a>
+    </div>
+</div>
+{% endblock %}

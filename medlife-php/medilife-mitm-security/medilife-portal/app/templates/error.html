@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ status_code }} - MediLife</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="error-page">
+    <div class="error-container">
+        <div class="error-content">
+            <h1 class="error-code">{{ status_code }}</h1>
+            <h2 class="error-message">{{ message }}</h2>
+            <p class="error-description">
+                Ndodhi një gabim i papritur. Ju lutemi provoni përsëri më vonë.
+            </p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                Kthehu në Kreu
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local-only security material and collected evidence
+/certs/
+/evidence/
+/report/
+/_archive/
+
+# Runtime diagnostics
+debug.log
+*.log

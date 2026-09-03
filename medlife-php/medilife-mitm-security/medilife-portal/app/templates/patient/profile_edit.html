@@ -1,0 +1,47 @@
+{% extends "layouts/patient.html" %}
+
+{% block title %}Edito Profilin{% endblock %}
+
+{% block page_title %}Edito Profilin{% endblock %}
+
+{% block content %}
+<div class="card card-narrow">
+    <div class="card-header">
+        <h2>Edito Informacionet Personale</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" class="form">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.phone.label }}
+                {{ form.phone(class="form-control") }}
+                {% for error in form.phone.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control", type="email") }}
+                {% for error in form.email.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.address.label }}
+                {{ form.address(class="form-control") }}
+                {% for error in form.address.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Ruaj Ndryshimet</button>
+                <a href="{{ url_for('patient.profile') }}" class="btn btn-outline">Anulo</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

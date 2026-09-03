@@ -1,0 +1,107 @@
+{% extends "layouts/doctor.html" %}
+
+{% block title %}{{ patient.full_name }}{% endblock %}
+
+{% block page_title %}{{ patient.full_name }}{% endblock %}
+
+{% block content %}
+<div class="patient-profile">
+    <!-- Patient Info Card -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Informacionet e Pacientit</h2>
+        </div>
+        <div class="card-body">
+            <dl class="info-list">
+                <dt>Data e Lindjes</dt>
+                <dd>{{ patient.date_of_birth.strftime('%Y-%m-%d') }}</dd>
+
+                <dt>Gjinia</dt>
+                <dd>{{ patient.gender or '-' }}</dd>
+
+                <dt>Telefoni</dt>
+                <dd>{{ patient.phone or '-' }}</dd>
+
+                <dt>Email</dt>
+                <dd>{{ patient.email or '-' }}</dd>
+
+                <dt>Numri i Sigurimit</dt>
+                <dd>{{ patient.insurance_number or '-' }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Medical Records -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Regjistrimet Mjekësore</h2>
+            <a href="{{ url_for('doctor.create_record', patient_id=patient.id) }}" class="btn btn-primary">
+                ➕ Shto Regjistrim
+            </a>
+        </div>
+        <div class="card-body">
+            {% if records %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Tipi</th>
+                        <th>Diagnoza</th>
+                        <th>Trajtimi</th>
+                        <th>Veprime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td><span class="badge badge-info">{{ record.record_type }}</span></td>
+                        <td>{{ (record.diagnosis or '-')[:50] }}{% if record.diagnosis and record.diagnosis|length > 50 %}...{% endif %}</td>
+                        <td>{{ (record.treatment or '-')[:50] }}{% if record.treatment and record.treatment|length > 50 %}...{% endif %}</td>
+                        <td class="actions">
+                            <a href="{{ url_for('doctor.edit_record', record_id=record.id) }}" class="btn btn-sm btn-outline">
+                                ✏️
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">Nuk ka regjistrime mjekësore për këtë pacient.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Appointments -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Programimet</h2>
+        </div>
+        <div class="card-body">
+            {% if appointments %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Statusi</th>
+                        <th>Arsyeja</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appt in appointments %}
+                    <tr>
+                        <td>{{ appt.appointment_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td><span class="badge badge-info">{{ appt.status }}</span></td>
+                        <td>{{ appt.reason or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">Nuk ka programime.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

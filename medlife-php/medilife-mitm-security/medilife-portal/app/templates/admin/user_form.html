@@ -1,0 +1,50 @@
+{% extends "layouts/admin.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="card card-narrow">
+    <div class="card-body">
+        <form method="POST" class="form">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.username.label }}
+                {{ form.username(class="form-control") }}
+                {% for error in form.username.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="Lëre bosh për të mos ndryshuar") }}
+                {% for error in form.password.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+                <small class="form-hint">Lëre bosh për të mos ndryshuar fjalëkalimin.</small>
+            </div>
+
+            <div class="form-group">
+                {{ form.role.label }}
+                {{ form.role(class="form-control") }}
+                {% for error in form.role.errors %}
+                    <span class="error-message">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="form-group form-check">
+                {{ form.active(class="form-check-input") }}
+                {{ form.active.label(class="form-check-label") }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Ruaj</button>
+                <a href="{{ url_for('admin.users') }}" class="btn btn-outline">Anulo</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "layouts/patient.html" %}
+
+{% block title %}Regjistrimet Mjekësore{% endblock %}
+
+{% block page_title %}Regjistrimet e Mia Mjekësore{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Historiku Mjekësor</h2>
+    </div>
+    <div class="card-body">
+        {% if records %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipi</th>
+                    <th>Diagnoza</th>
+                    <th>Trajtimi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td><span class="badge badge-info">{{ record.record_type }}</span></td>
+                    <td>
+                        {% if record.diagnosis %}
+                            {{ record.diagnosis[:100] }}{% if record.diagnosis|length > 100 %}...{% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if record.treatment %}
+                            {{ record.treatment[:100] }}{% if record.treatment|length > 100 %}...{% endif %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">Nuk ka regjistrime mjekësore.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
