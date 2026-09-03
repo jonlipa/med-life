@@ -1,53 +1,53 @@
 # Med Life
 
-Med Life është një portal i sigurt për menaxhimin e proceseve klinike, i ndërtuar
-me PHP MVC, MySQL dhe faqe server-rendered. Aplikacioni kryesor ndodhet në
+Med Life is a secure healthcare operations portal built with PHP MVC, MySQL,
+and server-rendered pages. The canonical application is located in
 [`medlife-php/`](medlife-php/).
 
-## Veçoritë kryesore
+## Key Features
 
-- Role të ndara për administratorin, mjekun, recepsionin dhe pacientin
-- Menaxhim i termineve, pacientëve, rezultateve, faturimit dhe njoftimeve
-- Autentikim me TOTP ose kod njëpërdorimësh të dërguar me email
-- Mbrojtje CSRF, session cookies të sigurta dhe rate limiting
-- Mbështetje për HTTPS/HSTS pas reverse proxy ose proxy-t lokal
-- Ndërfaqe responsive me përmirësime për aksesueshmërinë
-- Migrime MySQL, health check dhe të dhëna demo për zhvillim
+- Separate roles for administrators, doctors, reception staff, and patients
+- Appointment, patient, medical result, billing, and notification management
+- Authentication with TOTP or one-time verification codes delivered by email
+- CSRF protection, secure session cookies, and rate limiting
+- HTTPS and HSTS support behind a reverse proxy or the local HTTPS proxy
+- Responsive interface with accessibility improvements
+- MySQL migrations, health checks, and development seed data
 
-## Stack-u
+## Technology Stack
 
-- PHP 8+ me arkitekturë MVC pa framework
-- MySQL ose MariaDB
-- HTML dhe CSS server-rendered
-- JavaScript minimal për progressive enhancement
+- PHP 8+ with a framework-free MVC architecture
+- MySQL or MariaDB
+- Server-rendered HTML and CSS
+- Minimal JavaScript for progressive enhancement
 
-## Nisja e shpejtë në Windows
+## Quick Start on Windows
 
-1. Klono repository-n dhe hyr në dosjen e projektit:
+1. Clone the repository and enter the project directory:
 
    ```powershell
    git clone https://github.com/jonlipa/med-life.git
    cd med-life
    ```
 
-2. Krijo konfigurimin lokal:
+2. Create the local configuration file:
 
    ```powershell
    Copy-Item .\medlife-php\.env.example .\medlife-php\.env
    ```
 
-3. Përditëso kredencialet e MySQL në `medlife-php/.env`.
+3. Update the MySQL credentials in `medlife-php/.env`.
 
-4. Nise aplikacionin:
+4. Start the application:
 
    ```powershell
    .\start-med-life.cmd
    ```
 
-Launcher-i kontrollon MySQL, ekzekuton health check-un, përgatit databazën dhe
-nis aplikacionin me HTTPS lokal kur runtime-i përkatës është i disponueshëm.
+The launcher checks MySQL, runs the health check, prepares the database, and
+starts the application with local HTTPS when the required runtime is available.
 
-## Nisja manuale
+## Manual Startup
 
 ```powershell
 cd medlife-php
@@ -58,42 +58,42 @@ cd medlife-php
 .\php-runtime.cmd -S 127.0.0.1:8000 -t public public/index.php
 ```
 
-Aplikacioni do të jetë në `http://127.0.0.1:8000`. Launcher-i kryesor përdor
-`https://127.0.0.1:8443` si adresë të parazgjedhur.
+The application will be available at `http://127.0.0.1:8000`. The main launcher
+uses `https://127.0.0.1:8443` by default.
 
-## Struktura
+## Project Structure
 
 ```text
 med-life/
 ├── medlife-php/
-│   ├── app/                 # MVC: controllers, repositories, views dhe core
-│   ├── bootstrap/           # Inicializimi i aplikacionit
-│   ├── config/              # Konfigurimi standard
-│   ├── database/migrations/ # Skema dhe migrimet MySQL
-│   ├── public/              # Entry point dhe asetet publike
-│   ├── routes/              # Rrugët HTTP
-│   └── scripts/             # Setup, health check dhe mirëmbajtje
-├── start-med-life.cmd       # Launcher-i kryesor për Windows
+│   ├── app/                 # MVC controllers, repositories, views, and core
+│   ├── bootstrap/           # Application initialization
+│   ├── config/              # Default configuration
+│   ├── database/migrations/ # MySQL schema and migrations
+│   ├── public/              # Public entry point and assets
+│   ├── routes/              # HTTP routes
+│   └── scripts/             # Setup, health checks, and maintenance
+├── start-med-life.cmd       # Main Windows launcher
 └── README.md
 ```
 
-## Siguria
+## Security
 
-Skedarët `.env`, databazat lokale, log-et, certifikatat dhe materialet runtime
-nuk ruhen në Git. Për production:
+Environment files, local databases, logs, certificates, and runtime artifacts
+are excluded from Git. For production deployments:
 
-- përdor kredenciale unike dhe ndrysho menjëherë çdo llogari demo;
-- aktivizo HTTPS, HSTS dhe `SESSION_COOKIE_SECURE`;
-- përfundo TLS në një reverse proxy të besueshëm;
-- mos publiko certifikata private ose kopje të databazës;
-- ekzekuto migrimet dhe health check-un para deploy-it.
+- use unique credentials and immediately replace every demo account password;
+- enable HTTPS, HSTS, and `SESSION_COOKIE_SECURE`;
+- terminate TLS through a trusted reverse proxy;
+- never publish private certificates or database backups;
+- run all migrations and the health check before deployment.
 
-## Kontrolli i sintaksës
+## Syntax Check
 
 ```bash
 find medlife-php -type f -name '*.php' -not -path '*/vendor/*' -print0 \
   | xargs -0 -n1 php -l
 ```
 
-Dokumentacioni i zgjeruar gjendet te
+Extended documentation is available in
 [`medlife-php/README.md`](medlife-php/README.md).
